@@ -1,30 +1,17 @@
 services:
-  db:
-    image: postgres:latest
-    environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: patients_db
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
-
   web:
     build: .
-    command: ["sh", "-c", "/wait-for-db.sh db && uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload"]
+    command: ["sh", "-c", "/wait-for-db.sh db && uvicorn app.main:app --host 0.0.0.0 --port $PORT --reload"]
     depends_on:
       - db
     environment:
+      PORT: ${PORT:-8000}  # Use PORT from environment or default to 8000
       DATABASE_URL: postgresql://user:password@db:5432/patients_db
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
       POSTGRES_DB: patients_db
       POSTGRES_SERVER: db
     ports:
-      - "8000:8000"
+      - "${PORT:-8000}:${PORT:-8000}"  # Use PORT from environment
     volumes:
       - .:/code
-
-volumes:
-  postgres_data:
