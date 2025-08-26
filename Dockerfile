@@ -20,8 +20,10 @@ COPY wait-for-db.sh /wait-for-db.sh
 RUN chmod +x /wait-for-db.sh
 
 # Expose the port the app runs on
+# Expose the port the app runs on
 EXPOSE 8000
 
+
 # Command to run the application
-# This will be overridden by docker-compose.yml to use the wait script
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Run app with dynamic Railway port (fall back to 8000 if not set)
+CMD uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}
