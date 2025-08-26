@@ -19,11 +19,8 @@ COPY . .
 COPY wait-for-db.sh /wait-for-db.sh
 RUN chmod +x /wait-for-db.sh
 
-# Expose the port the app runs on
-# Expose the port the app runs on
+# Expose default port (Railway will override with $PORT)
 EXPOSE 8000
 
-
 # Command to run the application
-# Run app with dynamic Railway port (fall back to 8000 if not set)
-CMD uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}
+CMD ["sh", "-c", "uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}"]
