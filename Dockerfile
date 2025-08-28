@@ -15,5 +15,5 @@ RUN chmod +x /wait-for-db.sh
 
 EXPOSE 8000
 
-# ✅ Run python main.py instead of uvicorn directly
-CMD ["python", "app/main.py"]
+# ✅ Run as module so imports work
+CMD ["python", "-m", "app.main"]

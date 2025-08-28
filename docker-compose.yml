@@ -1,7 +1,7 @@
 services:
   web:
     build: .
-    command: ["sh", "-c", "/wait-for-db.sh db && python app/main.py"]
+    command: ["sh", "-c", "/wait-for-db.sh db && python -m app.main"]
     depends_on:
       - db
     environment:
